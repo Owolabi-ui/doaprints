@@ -5,16 +5,21 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link } from 'react-scroll';
 import { sanity } from "../sanity/client";
 import { urlFor } from "../sanity/imageUrl";
 import { Geist, Geist_Mono } from "next/font/google";
+import NextLink from "next/link";
+import { Link as ScrollLink } from "react-scroll";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
+
+
 
 type Product = {
   _id: string;
   name: string;
   description: string;
-  image: any;
+  image: SanityImageSource; // Use a more specific type if you know it
   minOrder: number;
   price: string;
 };
@@ -34,8 +39,8 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [prevScrollPos, setPrevScrollPos] = useState(0)
+  // Removed isMenuOpen (unused)
+  const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
@@ -93,9 +98,7 @@ export default function Home() {
     "/images/img4.jpg",
   ];
 
-  const handleLinkClick = () => {
-    setIsMenuOpen(false);
-  };
+  // Removed handleLinkClick (unused)
 
   return (
     <>
@@ -141,7 +144,7 @@ export default function Home() {
         `}</style>
         {/* Header */}
         <header className={`w-full py-4 px-6 flex items-center justify-between bg-gradient-to-r from-black/80 via-gray-900/80 to-black/80 backdrop-blur-lg shadow-xl fixed top-0 z-30 transition-transform duration-300 ease-in-out ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
-          <a href="/" className="flex items-center gap-3 group">
+          <NextLink href="/" className="flex items-center gap-3 group">
             <Image 
               src="/images/logo.jpg" 
               alt="DOA Prints Logo" 
@@ -149,39 +152,39 @@ export default function Home() {
               height={40} 
               className="rounded-lg transform transition-transform duration-300 ease-in-out group-hover:scale-110" 
             />
-          </a>
+          </NextLink>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 text-lg font-semibold tracking-wide">
-            <Link to="services" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Services">
+            <ScrollLink to="services" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Services">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L8 21m6.25-4l1.75 4M12 3v6m0 0l3 3m-3-3l-3 3" /></svg>
-            </Link>
-            <Link to="products" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Products">
+            </ScrollLink>
+            <ScrollLink to="products" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Products">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
-            </Link>
-            <Link to="about" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="About">
+            </ScrollLink>
+            <ScrollLink to="about" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="About">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 014-4h0a4 4 0 014 4v2"/></svg>
-            </Link>
-            <Link to="contact" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Contact">
+            </ScrollLink>
+            <ScrollLink to="contact" smooth={true} duration={500} offset={-80} className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Contact">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2v-4.5M16 3v4M8 3v4M3 11h18"/></svg>
-            </Link>
+            </ScrollLink>
           </nav>
 
         {/* Mobile Nav (Icons Row) - hidden when loading */}
         {!loading && (
           <nav className="md:hidden fixed bottom-4 left-60 -translate-x-1/2 z-40 flex items-center justify-center gap-8 bg-black/70 rounded-full px-4 py-2 shadow-xl backdrop-blur-lg">
-            <Link to="services" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Services" onClick={handleLinkClick}>
+            <ScrollLink to="services" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Services">
               <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L8 21m6.25-4l1.75 4M12 3v6m0 0l3 3m-3-3l-3 3" /></svg>
-            </Link>
-            <Link to="products" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Products" onClick={handleLinkClick}>
+            </ScrollLink>
+            <ScrollLink to="products" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Products">
               <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
-            </Link>
-            <Link to="about" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="About" onClick={handleLinkClick}>
+            </ScrollLink>
+            <ScrollLink to="about" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="About">
               <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 014-4h0a4 4 0 014 4v2"/></svg>
-            </Link>
-            <Link to="contact" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Contact" onClick={handleLinkClick}>
+            </ScrollLink>
+            <ScrollLink to="contact" smooth={true} duration={500} offset={-80} className="text-gray-200 hover:text-cyan-400 transition-colors duration-300 cursor-pointer" title="Contact">
               <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2v-4.5M16 3v4M8 3v4M3 11h18"/></svg>
-            </Link>
+            </ScrollLink>
           </nav>
         )}
         </header>
@@ -279,10 +282,13 @@ export default function Home() {
                 .map(product => (
                   <div key={product._id} className="min-w-[260px] max-w-xs w-full bg-gradient-to-br from-gray-900/80 to-gray-800/60 border border-cyan-800/40 p-3 sm:p-5 rounded-2xl shadow-2xl hover:shadow-cyan-400/30 hover:scale-[1.03] transition-all duration-300 flex flex-col">
                     <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden rounded-xl">
-                      <img
+                      <Image
                         src={urlFor(product.image).width(400).url()}
                         alt={product.name}
+                        fill
                         className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                        sizes="(max-width: 600px) 100vw, 400px"
+                        priority={false}
                       />
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-white mb-1 font-[family-name:var(--font-geist-sans)]">{product.name}</h3>
